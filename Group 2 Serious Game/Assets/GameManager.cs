@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
         //if time is up
         else 
         {
-        
+            SceneManager.LoadScene("Programming_Test");
         }
     }
 

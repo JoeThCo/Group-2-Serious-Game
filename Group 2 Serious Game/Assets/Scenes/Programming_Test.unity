@@ -280,6 +280,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6279079138406680764, guid: 8d9c45cac68d9e14dbd910b9c3ffec1e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6279079138406680765, guid: 8d9c45cac68d9e14dbd910b9c3ffec1e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -894,6 +898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d7546f687ebaea4dbbb98b8f864b6e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlaying: 0
   BoardSize: 8
   Offset: 2
   Matches: 0
@@ -904,8 +909,8 @@ MonoBehaviour:
   - {fileID: 240194032984460079, guid: d28f71b0db1c5e04bb0ecafa3312451e, type: 3}
   - {fileID: 240194032984460079, guid: 07766544b81a9b74c8beed2043e31fe4, type: 3}
   TileParent: {fileID: 1507061129}
-  Clipboard: {fileID: 0}
-  QuestionText: {fileID: 0}
+  Clipboard: {fileID: 51117683}
+  QuestionText: {fileID: 316383598}
   ProgressBar: {fileID: 549316181}
   CorrectAnswer: 1
   ToBeDestroyed: []
@@ -1385,7 +1390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6279079138406680764, guid: 8d9c45cac68d9e14dbd910b9c3ffec1e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6279079138406680765, guid: 8d9c45cac68d9e14dbd910b9c3ffec1e, type: 3}
       propertyPath: m_LocalPosition.x
