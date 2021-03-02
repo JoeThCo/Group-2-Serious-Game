@@ -40,11 +40,14 @@ public class Tile : MonoBehaviour
 
     private void OnMouseUp()
     {
-        SwitchTileLocation();
+        if (gm.isPlaying) 
+        {
+            SwitchTileLocation();
 
-        gm.MatchChecker();
+            gm.MatchChecker();
 
-        SwitchTile = null;
+            SwitchTile = null;
+        }
     }
 
     void DragTileAround()

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
+    public bool isPlaying = true;
+
     [Header("Board Init")]
     public int BoardSize;
     public float Offset;
@@ -23,7 +27,12 @@ public class GameManager : MonoBehaviour
     public Transform TileParent;
 
     [Header("Board UI")]
+    public GameObject Clipboard;
+    public TextMeshProUGUI QuestionText;
     public Image ProgressBar;
+
+    [Header("First Part Answer")]
+    public bool CorrectAnswer = true;
 
     public List<GameObject> ToBeDestroyed;
     private void Start()
@@ -31,11 +40,50 @@ public class GameManager : MonoBehaviour
         Board = new GameObject[BoardSize, BoardSize];
 
         MakeGrid();
+
+        if (Random.Range(0, 2) == 2)
+            CorrectAnswer = false;
+        else
+            CorrectAnswer = true;
+
+        SetText(CorrectAnswer);
     }
+
+    public void CompareButtons(bool choice) 
+    {
+        if (choice == CorrectAnswer) 
+        {
+            Clipboard.GetComponent<RectTransform>().DOAnchorPosY(1100, 2);
+            isPlaying = true;
+        }
+    }
+
+    void SetText(bool wantThin) 
+    {
+        if (wantThin)
+        {
+            QuestionText.SetText("Select the [Under Weight] cat!");
+        }
+        else 
+        {
+            QuestionText.SetText("Select the [Over Weight] cat!");
+        }
+    }
+
+
 
     private void FixedUpdate()
     {
-        TimeForLevel -= Time.deltaTime;
+        //if playing
+        if (TimeForLevel >= 0)
+        {
+            TimeForLevel -= Time.deltaTime;
+        }
+        //if time is up
+        else 
+        {
+        
+        }
     }
 
     void UpdateProgressBar() 
