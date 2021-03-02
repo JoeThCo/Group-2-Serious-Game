@@ -40,8 +40,6 @@ public class Tile : MonoBehaviour
 
         gm.MatchChecker();
 
-        //gm.DebugGrid();
-
         SwitchTile = null;
     }
 
