@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject[,] Board;
 
     [Space(15)]
+    public GameObject[] AllTiles;
+    [Space(15)]
     public GameObject Tile;
     public Transform TileParent;
     [Space(15)]
@@ -32,19 +34,24 @@ public class GameManager : MonoBehaviour
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                GameObject tile = Instantiate(Tile, new Vector2(x - BoardSize / 2, y - BoardSize / 2) * Offset, Quaternion.identity, TileParent);
-                Board[x, y] = tile;
-
-                tile.GetComponent<Tile>().Cords = new Vector2Int(x, y);
-                tile.name = "(" + x + "," + y + ")";
-
-                if (Random.Range(0, 2) == 0)
-                {
-                    tile.GetComponent<SpriteRenderer>().color = Color.black;
-                    tile.GetComponent<Tile>().Value = 1;
-                }
+                SpawnRandomTile(x, y);
             }
         }
+    }
+
+    GameObject SpawnRandomTile(int x, int y)
+    {
+        int tileIndex = Random.Range(0, AllTiles.Length);
+
+        GameObject tile = Instantiate(AllTiles[tileIndex], new Vector2(x - BoardSize / 2, y - BoardSize / 2) * Offset, Quaternion.identity, TileParent);
+        tile.GetComponent<Tile>().Value = tileIndex;
+
+        Board[x, y] = tile;
+
+        tile.GetComponent<Tile>().Cords = new Vector2Int(x, y);
+        tile.name += " (" + x + "," + y + ")";
+
+        return tile;
     }
 
     bool isValid(int x, int y)
@@ -114,25 +121,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void FillUpBoard() 
+    void FillUpBoard()
     {
         for (int y = 0; y < BoardSize; y++)
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                if (Board[x, y] == null) 
+                if (Board[x, y] == null)
                 {
-                    GameObject tile = Instantiate(Tile, new Vector2(x - BoardSize / 2, y - BoardSize / 2) * Offset, Quaternion.identity, TileParent);
-                    Board[x, y] = tile;
-
-                    tile.GetComponent<Tile>().Cords = new Vector2Int(x, y);
-                    tile.name = "(" + x + "," + y + ")";
-
-                    if (Random.Range(0, 2) == 0)
-                    {
-                        tile.GetComponent<SpriteRenderer>().color = Color.black;
-                        tile.GetComponent<Tile>().Value = 1;
-                    }
+                    SpawnRandomTile(x, y);
                 }
             }
         }

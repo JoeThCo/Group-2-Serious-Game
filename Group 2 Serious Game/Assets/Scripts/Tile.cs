@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    [HideInInspector]
     public int Value;
     public Vector2Int Cords;
     [Space(15)]

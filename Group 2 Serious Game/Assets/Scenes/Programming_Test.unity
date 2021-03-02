@@ -410,6 +410,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardSize: 5
   Offset: 2
+  AllTiles:
+  - {fileID: 240194032984460079, guid: 7cd939ab4725734458516e6f95d27026, type: 3}
+  - {fileID: 240194032984460079, guid: d28f71b0db1c5e04bb0ecafa3312451e, type: 3}
+  - {fileID: 240194032984460079, guid: 07766544b81a9b74c8beed2043e31fe4, type: 3}
   Tile: {fileID: 2538564129715886834, guid: 834d3bf12e08a7f4d8ff0e8ef629e4f8, type: 3}
   TileParent: {fileID: 1507061129}
   DebugTile: {fileID: 6950638688249103853, guid: 78fdea1eb4ce8cf49842780e79b781d2, type: 3}
