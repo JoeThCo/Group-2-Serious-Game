@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileController : MonoBehaviour
+public class Tile : MonoBehaviour
 {
+    public int Value;
+    public Vector2Int Cords;
+    [Space(15)]
     public GameObject SwitchTile;
 
-    private Vector3 offset = new Vector3(0,0,10);
-    private Vector2 startSpot;
+    private Vector3 offset = new Vector3(0, 0, 10);
+    private Vector3 startSpot;
     private Camera Cam;
-
-    private GameMananger gm;
-    private MatchManager mm;
+    private GameManager gm;
 
     private void Start()
     {
         Cam = Camera.main;
-
-        gm = FindObjectOfType<GameMananger>();
-        mm = FindObjectOfType<MatchManager>();
+        gm = FindObjectOfType<GameManager>();
     }
 
+    //2 pick up piece
     private void OnMouseDown()
     {
         //get og position to return to if not a valid spot
-        startSpot = transform.position;
+        startSpot = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y),0);
 
         //visual of seletecing the object
     }
@@ -37,9 +37,13 @@ public class TileController : MonoBehaviour
     private void OnMouseUp()
     {
         SwitchTileLocation();
+
+        gm.ComboChecker();
+
+        SwitchTile = null;
     }
 
-    void DragTileAround() 
+    void DragTileAround()
     {
         //get the current location
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -1);
@@ -51,7 +55,8 @@ public class TileController : MonoBehaviour
         transform.position = curPosition;
     }
 
-    void SwitchTileLocation() 
+    //3 swap tiles on move
+    void SwitchTileLocation()
     {
         if (SwitchTile && new Vector2(Mathf.Round(startSpot.x), Mathf.Round(startSpot.y)) != new Vector2(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)))
         {
@@ -60,7 +65,11 @@ public class TileController : MonoBehaviour
             SwitchTile.transform.position = startSpot;
 
             //swap board values
-            mm.SwapPiecesOnBoard(gameObject, SwitchTile);
+            //Debug.Log(gm.Board[Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.y)].name);
+           //Debug.Log(gm.Board[Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.y)].name);
+
+            gm.Board[Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.y)] = gameObject;
+            gm.Board[Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.y)] = SwitchTile;
         }
         else
         {
@@ -71,7 +80,7 @@ public class TileController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Tile")) 
+        if (collision.gameObject.CompareTag("Tile"))
         {
             SwitchTile = collision.gameObject;
         }
