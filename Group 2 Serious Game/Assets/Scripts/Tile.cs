@@ -40,7 +40,7 @@ public class Tile : MonoBehaviour
 
         gm.ComboChecker();
 
-        gm.DebugGrid();
+        //gm.DebugGrid();
 
         SwitchTile = null;
     }
