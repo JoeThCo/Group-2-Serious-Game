@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
         Board = new GameObject[BoardSize, BoardSize];
 
         MakeGrid();
-        //DebugGrid();
     }
 
     // make board
@@ -39,7 +38,7 @@ public class GameManager : MonoBehaviour
                 tile.GetComponent<Tile>().Cords = new Vector2Int(x, y);
                 tile.name = "(" + x + "," + y + ")";
 
-                if (x % 2 == 0)
+                if (Random.Range(0, 2) == 0)
                 {
                     tile.GetComponent<SpriteRenderer>().color = Color.black;
                     tile.GetComponent<Tile>().Value = 1;
@@ -78,13 +77,47 @@ public class GameManager : MonoBehaviour
     {
         if (combo >= 3)
         {
-            for (int i = 0; i < combo; i++)
+            if (combo == BoardSize)
             {
-                Debug.Log(a + " " + b);
-                ToBeDestroyed.Add(Board[a, b - i]);
+                for (int i = 0; i < combo; i++)
+                {
+                    if (isValid(a, b - i))
+                    {
+                        if (!ToBeDestroyed.Contains(Board[a, b - i]))
+                            ToBeDestroyed.Add(Board[a, b - i]);
+                    }
+                }
             }
+            else
+            {
+                for (int i = 0; i < combo; i++)
+                {
+                    if (isValid(a, b - i))
+                    {
+                        if (!ToBeDestroyed.Contains(Board[a, b - i]))
+                            ToBeDestroyed.Add(Board[a, b - i]);
+                    }
+                }
+            }
+        }
+    }
 
-            Debug.LogWarning("Combo x " + (combo).ToString());
+    void ApplyGravity()
+    {
+        for (int y = 0; y < BoardSize; y++)
+        {
+            for (int x = 0; x < BoardSize; x++)
+            {
+                //if a piece is there
+                if (Board[x, y])
+                {
+                    //if not at 0 and the piece below is nothing
+                    if (y > 0 && !Board[x, y - 1])
+                    {
+                        Board[x, y].transform.position = new Vector2(BoardSize / 2 - x, BoardSize / 2 - y - 1) * Offset;
+                    }
+                }
+            }
         }
     }
 
@@ -93,7 +126,6 @@ public class GameManager : MonoBehaviour
         int combo = 1;
         int lastValue = -1;
 
-        //up and down
         for (int y = 0; y < BoardSize; y++)
         {
             for (int x = 0; x < BoardSize; x++)
@@ -107,15 +139,18 @@ public class GameManager : MonoBehaviour
                     {
                         combo++;
                     }
+
+                    //if current != last
                     else
                     {
+                        //apply combo and reset
                         MatchLength(combo, y, x);
                         combo = 1;
                     }
+                    //set the current to the last
                     lastValue = Board[y, x].GetComponent<Tile>().Value;
                 }
             }
-
             MatchLength(combo, y, BoardSize - 1);
             combo = 1;
             lastValue = -1;
@@ -126,5 +161,9 @@ public class GameManager : MonoBehaviour
             Board[i.GetComponent<Tile>().Cords.x, i.GetComponent<Tile>().Cords.y] = null;
             Destroy(i);
         }
+
+        ToBeDestroyed.Clear();
+
+        ApplyGravity();
     }
 }

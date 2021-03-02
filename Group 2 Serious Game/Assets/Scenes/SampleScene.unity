@@ -364,7 +364,7 @@ MonoBehaviour:
   m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 2
-  m_ConstraintCount: 4
+  m_ConstraintCount: 5
 --- !u!1 &795708636
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,12 +408,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d7546f687ebaea4dbbb98b8f864b6e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardSize: 4
+  BoardSize: 5
   Offset: 2
   Tile: {fileID: 2538564129715886834, guid: 834d3bf12e08a7f4d8ff0e8ef629e4f8, type: 3}
   TileParent: {fileID: 1507061129}
   DebugTile: {fileID: 6950638688249103853, guid: 78fdea1eb4ce8cf49842780e79b781d2, type: 3}
   DebugTileParent: {fileID: 677370429}
+  ToBeDestroyed: []
 --- !u!1 &1360085835
 GameObject:
   m_ObjectHideFlags: 0
