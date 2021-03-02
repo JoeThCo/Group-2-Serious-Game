@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +13,22 @@ public class GameManager : MonoBehaviour
     [Space(15)]
     public GameObject Tile;
     public Transform TileParent;
+    [Space(15)]
+    public GameObject DebugTile;
+    public Transform DebugTileParent;
 
     private void Start()
     {
         Board = new GameObject[BoardSize, BoardSize];
 
-        StartGrid();
+        MakeGrid();
+        DebugGrid();
     }
 
     // make board
-    void StartGrid()
+    public void MakeGrid()
     {
+
         for (int y = 0; y < BoardSize; y++)
         {
             for (int x = 0; x < BoardSize; x++)
@@ -42,36 +48,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ComboChecker()
+    public void DebugGrid() 
     {
-        int currentCombo = Board[0, 0].GetComponent<Tile>().Value;
-        int combo = 1;
-
-        void Reset(int x, int y)
+        foreach (Transform tile in DebugTileParent) 
         {
-            if(combo >= 3)
-                Debug.Log("Combo x" + combo.ToString());
-
-            combo = 1;
-            currentCombo = Board[x, y].GetComponent<Tile>().Value;
+            Destroy(tile.gameObject);
         }
 
         for (int y = 0; y < BoardSize; y++)
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                Debug.Log("Current Combo:" + currentCombo + " | " + Board[x, y].GetComponent<Tile>().Value);
+                GameObject debugTile = Instantiate(DebugTile, Vector3.zero, Quaternion.identity, DebugTileParent);
+                debugTile.GetComponentInChildren<Text>().text = Board[x, y].GetComponent<Tile>().Value.ToString();
+            }
+        }
+    }
 
+    public void ComboChecker()
+    {
+        int currentCombo = Board[0, 0].GetComponent<Tile>().Value;
+        int combo = 0;
+
+        void Reset(int x, int y)
+        {
+            if (combo >= 3)
+                Debug.Log("Combo x" + combo.ToString() + " " + y);
+
+            combo = 0;
+            currentCombo = Board[x, y].GetComponent<Tile>().Value;
+        }
+
+        //up and down
+        for (int y = 0; y < BoardSize; y++)
+        {
+            for (int x = 0; x < BoardSize; x++)
+            {
                 //if not the same value - ending the combo
-                if (Board[x, y].GetComponent<Tile>().Value != currentCombo)
+                if (Board[y, x].GetComponent<Tile>().Value != currentCombo)
                 {
                     //reset the combo
-                    Reset(x, y);
+                    Reset(y, x);
+                    break;
                 }
-                else
-                {
-                    combo++;
-                }
+                combo++;
             }
             Reset(BoardSize - 1, y);
         }

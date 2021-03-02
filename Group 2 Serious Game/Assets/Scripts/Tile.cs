@@ -24,7 +24,7 @@ public class Tile : MonoBehaviour
     private void OnMouseDown()
     {
         //get og position to return to if not a valid spot
-        startSpot = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y),0);
+        startSpot = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), 0);
 
         //visual of seletecing the object
     }
@@ -39,6 +39,8 @@ public class Tile : MonoBehaviour
         SwitchTileLocation();
 
         gm.ComboChecker();
+
+        gm.DebugGrid();
 
         SwitchTile = null;
     }
@@ -65,11 +67,14 @@ public class Tile : MonoBehaviour
             SwitchTile.transform.position = startSpot;
 
             //swap board values
-            //Debug.Log(gm.Board[Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.y)].name);
-           //Debug.Log(gm.Board[Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.y)].name);
+            //update cords
 
-            gm.Board[Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(SwitchTile.GetComponent<Tile>().Cords.y)] = gameObject;
-            gm.Board[Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.x), Mathf.RoundToInt(transform.GetComponent<Tile>().Cords.y)] = SwitchTile;
+            Vector2Int tempcords = SwitchTile.GetComponent<Tile>().Cords;
+            SwitchTile.GetComponent<Tile>().Cords = gameObject.GetComponent<Tile>().Cords;
+            gameObject.GetComponent<Tile>().Cords = tempcords;
+
+            gm.Board[gameObject.GetComponent<Tile>().Cords.x, gameObject.GetComponent<Tile>().Cords.y] = gameObject;
+            gm.Board[SwitchTile.GetComponent<Tile>().Cords.x, SwitchTile.GetComponent<Tile>().Cords.y] = SwitchTile;
         }
         else
         {
