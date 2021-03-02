@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Tile : MonoBehaviour
 {
@@ -15,10 +16,12 @@ public class Tile : MonoBehaviour
     private Camera Cam;
     private GameManager gm;
 
-    private void Start()
+    private void Awake()
     {
         Cam = Camera.main;
         gm = FindObjectOfType<GameManager>();
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, Random.Range(.5f, 1f)).SetEase(Ease.Flash);
     }
 
     //2 pick up piece

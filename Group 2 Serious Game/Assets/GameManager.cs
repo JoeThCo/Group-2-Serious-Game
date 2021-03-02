@@ -5,26 +5,42 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Board Init")]
     public int BoardSize;
     public float Offset;
-
     public GameObject[,] Board;
 
-    [Space(15)]
+    [Header("Match Info")]
+    public int Matches;
+    public int MaxMatches;
+
+    [Header("Time for Level")]
+    public float TimeForLevel;
+
+    [Header("All Spawnable Tiles")]
     public GameObject[] AllTiles;
     [Space(15)]
-    public GameObject Tile;
     public Transform TileParent;
-    [Space(15)]
-    public GameObject DebugTile;
-    public Transform DebugTileParent;
-    [Space(15)]
+
+    [Header("Board UI")]
+    public Image ProgressBar;
+
     public List<GameObject> ToBeDestroyed;
     private void Start()
     {
         Board = new GameObject[BoardSize, BoardSize];
 
         MakeGrid();
+    }
+
+    private void FixedUpdate()
+    {
+        TimeForLevel -= Time.deltaTime;
+    }
+
+    void UpdateProgressBar() 
+    {
+        ProgressBar.fillAmount = (float)Matches / (float)MaxMatches;
     }
 
     // make board
@@ -43,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         int tileIndex = Random.Range(0, AllTiles.Length);
 
-        GameObject tile = Instantiate(AllTiles[tileIndex], new Vector2(x - BoardSize / 2, y - BoardSize / 2) * Offset, Quaternion.identity, TileParent);
+        GameObject tile = Instantiate(AllTiles[tileIndex], new Vector2(x - (BoardSize / 2), y - BoardSize / 2) * Offset, Quaternion.identity, TileParent);
         tile.GetComponent<Tile>().Value = tileIndex;
 
         Board[x, y] = tile;
@@ -89,6 +105,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+            Matches++;
         }
     }
 
@@ -118,6 +135,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+            Matches++;
         }
     }
 
@@ -158,7 +176,7 @@ public class GameManager : MonoBehaviour
                     {
                         //apply combo and reset
                         MatchLengthUpAndDown(combo, y, x);
-                        MatchLengthLeftAndRight(combo, y, x);
+                        MatchLengthLeftAndRight(combo, x, y);
                         combo = 1;
                     }
                     //set the current to the last
@@ -166,7 +184,7 @@ public class GameManager : MonoBehaviour
                 }
             }
             MatchLengthUpAndDown(combo, y, BoardSize - 1);
-            MatchLengthLeftAndRight(combo, y, BoardSize - 1);
+            MatchLengthLeftAndRight(combo, BoardSize - 1, y);
 
             combo = 1;
             lastValue = -1;
@@ -181,5 +199,6 @@ public class GameManager : MonoBehaviour
         ToBeDestroyed.Clear();
 
         FillUpBoard();
+        UpdateProgressBar();
     }
 }
