@@ -38,7 +38,7 @@ public class Tile : MonoBehaviour
     {
         SwitchTileLocation();
 
-        gm.ComboChecker();
+        gm.MatchChecker();
 
         //gm.DebugGrid();
 

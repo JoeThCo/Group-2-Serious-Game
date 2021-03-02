@@ -65,44 +65,60 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ComboChecker()
+    bool isValid(int x, int y)
     {
-        int combo = 0;
-
-        void Reset(int x, int y)
+        if (x >= 0 && x < BoardSize && y >= 0 && y < BoardSize)
         {
-            if (combo > 2)
-            {
-                for (int i = 0; i < combo; i++)
-                {
-                    Debug.Log((x - i) + " " + y);
+            return true;
+        }
+        return false;
+    }
 
-                    if (!ToBeDestroyed.Contains(Board[x - i, y]))
-                        ToBeDestroyed.Add(Board[x - i, y]);
-                }
-                Debug.LogWarning("Combo x " + combo.ToString() + " at col: " + y);
+    void MatchLength(int combo, int a, int b)
+    {
+        if (combo >= 3)
+        {
+            for (int i = 0; i < combo; i++)
+            {
+                Debug.Log(a + " " + b);
+                ToBeDestroyed.Add(Board[a, b - i]);
             }
 
-            combo = 0;
+            Debug.LogWarning("Combo x " + (combo).ToString());
         }
+    }
+
+    public void MatchChecker()
+    {
+        int combo = 1;
+        int lastValue = -1;
 
         //up and down
         for (int y = 0; y < BoardSize; y++)
         {
-            Reset(0, 0);
-
             for (int x = 0; x < BoardSize; x++)
             {
-                //if not the same value - ending the combo
-                if (x > 0 && x < BoardSize - 1 && Board[y, x].GetComponent<Tile>().Value != Board[y, x + 1].GetComponent<Tile>().Value)
+                //if a valid cord
+                if (isValid(y, x))
                 {
-                    //reset the combo
-                    Reset(y, x);
+                    //Debug.Log("Current: " + Board[y, x].GetComponent<Tile>().Value + " | Last Value: " + lastValue + " | " + x + " , " + y + " Combo: " + combo);
+                    //if the current == last
+                    if (Board[y, x].GetComponent<Tile>().Value == lastValue)
+                    {
+                        combo++;
+                    }
+                    else
+                    {
+                        MatchLength(combo, y, x);
+                        combo = 1;
+                    }
+                    lastValue = Board[y, x].GetComponent<Tile>().Value;
                 }
-                else
-                    combo++;
             }
-            Reset(BoardSize - 1, y);
+
+            MatchLength(combo, y, BoardSize - 1);
+            combo = 1;
+            lastValue = -1;
         }
 
         foreach (GameObject i in ToBeDestroyed)
