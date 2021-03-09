@@ -41,11 +41,8 @@ public class GameManager : MonoBehaviour
         Board = new GameObject[BoardSize, BoardSize];
 
         MakeGrid();
-
-        if (Random.Range(0, 2) == 2)
-            CorrectAnswer = false;
-        else
-            CorrectAnswer = true;
+        
+        CorrectAnswer = false;
 
         SetText(CorrectAnswer);
     }
